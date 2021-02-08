@@ -1,0 +1,42 @@
+<html>
+
+<head></head>
+
+<body>
+    <ul>
+        <li data-salary="1000">Oswald</li>
+        <li data-salary="2000">Rovita</li>
+        <li data-salary="4000">Maeve</li>
+    </ul>
+    <div id="total"></div>
+    <div id="highSalaries"></div>
+    <div id="ES6"></div>
+
+    <script>
+        function getSalary(element) {
+            return parseInt(element.getAttribute('data-salary'));
+        }
+        function getSalaries() {
+            const elements = Array.from(document.querySelectorAll("li"))
+            return elements.map(getSalary)
+        }
+        function display(id,value){
+            document.getElementById(id).innerText = value
+        }
+        function isHighSal(salary) {
+            return salary > 1000
+        }
+        function displayMulti({val1, val2, val3}) {
+            document.getElementById("ES6").innerText = `${[val1]} ${val2} ${val3}`
+        }
+        {
+            const totalSal = getSalaries().reduce((prev, curr) => prev + curr)
+            const highSal = getSalaries().filter(isHighSal).join(",")
+            display("total", totalSal)
+            display("highSalaries", highSal)
+            displayMulti({val1 : "Oswald",val3:"Rovita",val2:"Maeve6"})
+        }
+    </script>
+</body>
+
+</html>

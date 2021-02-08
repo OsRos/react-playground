@@ -3,10 +3,16 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import Counter from './Counter';
+import RandomUser from './RandomUser';
+import Todo from './Todo';
+import ErrorBoundary from './ErrorBoundary';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    {/* <App /> */}
+    {/* <Counter></Counter> */}
+    <ErrorBoundary><Todo></Todo></ErrorBoundary>
   </React.StrictMode>,
   document.getElementById('root')
 );

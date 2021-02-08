@@ -1,0 +1,13 @@
+#TODO app
+* State
+** item list [done]
+** item -> (id, status, description) [done]
+* View
+** List to display the item list [done]
+** Text box to allow user to enter new item to the list [done]
+** Done status -> green color with checked [done]
+** Show a X icon next to item to remove the item [done]
+* Actions
+** Add -> Adds an item to the list with status as pending
+** Remove -> Remove an item from the list
+** Mark as done -> Mark item as done i.e show a different color

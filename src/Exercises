@@ -1,0 +1,9 @@
+1.)Create a counter with a button
+2.)Fetch data from randomuser.me/api
+
+Solution
+1.)Create a function component counter
+2.)use counter as a state
+3.)create a button which will manipulate the state i.e updater function
+
+9dum bd9f 7h3p s8em suf3 dzn6 9fan

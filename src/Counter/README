@@ -1,0 +1,7 @@
+1.)Create a counter with a button
+
+Solution
+1.)Create a function component counter
+2.)use counter as a state
+3.)create a button which will manipulate the state i.e updater function
+
