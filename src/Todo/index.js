@@ -5,41 +5,42 @@ import {
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-  TextField,
+  TextField
 } from "@material-ui/core";
 import {
   Assignment,
   AssignmentTurnedIn,
   Delete,
-  PostAdd,
+  PostAdd
 } from "@material-ui/icons";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
 export default function Todo() {
-  const index = useRef(3);
-  const todoEntered = useRef();
-  let lastEntered = useRef();
+  const index = useRef(1);
+  const todo = useRef();
   const [items, setItems] = useState([]);
-  const addItem = useCallback(() => {
-    console.log(todoEntered.current.value)
-    console.log(lastEntered.current)
-    if (todoEntered.current.value !== lastEntered.current) {
-      setItems([...items, createNewItem()]);
-    }
-  });
 
-  const createNewItem = useCallback(() => {
+  const isTodoExisting = (newTodo) =>
+    items
+      .map((item) => item.description)
+      .some((description) => description === newTodo);
+
+  const addItem = () => {
+    const newTodo = todo.current.value;
+    if (!isTodoExisting(newTodo)) {
+      setItems([...items, createNewItem(newTodo)]);
+    }
+  };
+
+  const createNewItem = (newTodo) => {
     const newItem = {
       id: index.current,
-      description: todoEntered.current.value,
+      description: newTodo,
       status: "pending",
     };
     index.current = index.current + 1;
-    lastEntered.current = todoEntered.current.value;
-    console.log(`lastEntered ${lastEntered.current}`)
-
     return newItem;
-  }, [todoEntered, index]);
+  };
 
   const removeItem = (id) => {
     setItems(items.filter((item) => item.id !== id));
@@ -50,7 +51,7 @@ export default function Todo() {
       <TextField
         placeholder="Enter a Todo ..."
         style={{ width: 1800 }}
-        inputRef={todoEntered}
+        inputRef={todo}
       ></TextField>
       <IconButton onClick={addItem}>
         <PostAdd></PostAdd>
