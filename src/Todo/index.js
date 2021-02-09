@@ -13,48 +13,12 @@ import {
   Delete,
   PostAdd,
 } from "@material-ui/icons";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useReducer, useRef, useState } from "react";
+import { reducer, initialState } from "./reducer";
 
 export default function Todo() {
-  const index = useRef(1);
   const todo = useRef();
-  const [items, setItems] = useState([]);
-
-  const isTodoExisting = useCallback(
-    (newTodo) =>
-      items
-        .map((item) => item.description)
-        .some((description) => description === newTodo),
-    [items]
-  );
-
-  const createNewItem = useCallback(
-    (newTodo) => {
-      const newItem = {
-        id: index.current,
-        description: newTodo,
-        status: "pending",
-      };
-      index.current = index.current + 1;
-      return newItem;
-    },
-    [index]
-  );
-
-  const addItem = useCallback(() => {
-    const newTodo = todo.current.value;
-    if (!isTodoExisting(newTodo)) {
-      setItems([...items, createNewItem(newTodo)]);
-    }
-  }, [todo, isTodoExisting, setItems, createNewItem]);
-
-
-  const removeItemHandler = (id) => removeItemHOF(id);
-
-  const removeItemHOF = useCallback(
-    id => () => setItems(items.filter((item) => item.id !== id)),
-    [setItems, items]
-  );
+  const [{ items }, dispatch] = useReducer(reducer, initialState);
 
   return (
     <>
@@ -63,7 +27,14 @@ export default function Todo() {
         style={{ width: 1800 }}
         inputRef={todo}
       ></TextField>
-      <IconButton onClick={addItem}>
+      <IconButton
+        onClick={() =>
+          dispatch({
+            type: "addItem",
+            payload: { newTodo: todo.current.value },
+          })
+        }
+      >
         <PostAdd></PostAdd>
       </IconButton>
       <List>
@@ -79,7 +50,11 @@ export default function Todo() {
               </ListItemIcon>
               <ListItemText primary={description}></ListItemText>
               <ListItemSecondaryAction>
-                <IconButton onClick={removeItemHandler(id)}>
+                <IconButton
+                  onClick={() =>
+                    dispatch({ type: "removeItem", payload: { id } })
+                  }
+                >
                   <Delete></Delete>
                 </IconButton>
               </ListItemSecondaryAction>
