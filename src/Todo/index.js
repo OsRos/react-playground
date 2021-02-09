@@ -5,46 +5,56 @@ import {
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-  TextField
+  TextField,
 } from "@material-ui/core";
 import {
   Assignment,
   AssignmentTurnedIn,
   Delete,
-  PostAdd
+  PostAdd,
 } from "@material-ui/icons";
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 
 export default function Todo() {
   const index = useRef(1);
   const todo = useRef();
   const [items, setItems] = useState([]);
 
-  const isTodoExisting = (newTodo) =>
-    items
-      .map((item) => item.description)
-      .some((description) => description === newTodo);
+  const isTodoExisting = useCallback(
+    (newTodo) =>
+      items
+        .map((item) => item.description)
+        .some((description) => description === newTodo),
+    [items]
+  );
 
-  const addItem = () => {
+  const createNewItem = useCallback(
+    (newTodo) => {
+      const newItem = {
+        id: index.current,
+        description: newTodo,
+        status: "pending",
+      };
+      index.current = index.current + 1;
+      return newItem;
+    },
+    [index]
+  );
+
+  const addItem = useCallback(() => {
     const newTodo = todo.current.value;
     if (!isTodoExisting(newTodo)) {
       setItems([...items, createNewItem(newTodo)]);
     }
-  };
+  }, [todo, isTodoExisting, setItems, createNewItem]);
 
-  const createNewItem = (newTodo) => {
-    const newItem = {
-      id: index.current,
-      description: newTodo,
-      status: "pending",
-    };
-    index.current = index.current + 1;
-    return newItem;
-  };
 
-  const removeItem = (id) => {
-    setItems(items.filter((item) => item.id !== id));
-  };
+  const removeItemHandler = (id) => removeItemHOF(id);
+
+  const removeItemHOF = useCallback(
+    id => () => setItems(items.filter((item) => item.id !== id)),
+    [setItems, items]
+  );
 
   return (
     <>
@@ -69,11 +79,7 @@ export default function Todo() {
               </ListItemIcon>
               <ListItemText primary={description}></ListItemText>
               <ListItemSecondaryAction>
-                <IconButton
-                  onClick={() => {
-                    removeItem(id);
-                  }}
-                >
+                <IconButton onClick={removeItemHandler(id)}>
                   <Delete></Delete>
                 </IconButton>
               </ListItemSecondaryAction>
