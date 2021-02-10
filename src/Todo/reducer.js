@@ -20,7 +20,8 @@ function createNewItem(newTodo, status = "pending") {
   return newItem;
 }
 
-export function reducer({ items }, action) {
+export default function reducer(state = initialState, action) {
+  const { items } = state;
   switch (action.type) {
     case "addItem":
       const newTodo = action.payload.newTodo;
@@ -31,6 +32,6 @@ export function reducer({ items }, action) {
       const id = action.payload.id;
       return { items: items.filter((item) => item.id !== id) };
     default:
-      throw new Error("unsupported action");
+      return state;
   }
 }

@@ -14,7 +14,7 @@ import {
   PostAdd,
 } from "@material-ui/icons";
 import React, { useCallback, useReducer, useRef, useState } from "react";
-import { reducer, initialState } from "./reducer";
+import reducer, { initialState } from "./reducer";
 
 export default function Todo() {
   const todo = useRef();
