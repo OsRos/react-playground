@@ -14,11 +14,17 @@ import {
   PostAdd,
 } from "@material-ui/icons";
 import React, { useCallback, useReducer, useRef, useState } from "react";
+import { connect } from "react-redux";
 import reducer, { initialState } from "./reducer";
+import { addItemAction, removeItemAction } from "./actions";
 
-export default function Todo() {
+function Todo({todo:todoState, addItemAction: addItem, removeItemAction: removeItem }) {
+  console.log("Todo ...")
+  console.log(todoState)
+  // const { addItemAction: addItem, removeItemAction: removeItem } = props
   const todo = useRef();
-  const [{ items }, dispatch] = useReducer(reducer, initialState);
+  const items = todoState.todo.items
+  // const [{ items }, dispatch] = useReducer(reducer, initialState);
 
   return (
     <>
@@ -27,14 +33,7 @@ export default function Todo() {
         style={{ width: 1800 }}
         inputRef={todo}
       ></TextField>
-      <IconButton
-        onClick={() =>
-          dispatch({
-            type: "addItem",
-            payload: { newTodo: todo.current.value },
-          })
-        }
-      >
+      <IconButton onClick={() => addItem(todo.current.value)}>
         <PostAdd></PostAdd>
       </IconButton>
       <List>
@@ -50,11 +49,7 @@ export default function Todo() {
               </ListItemIcon>
               <ListItemText primary={description}></ListItemText>
               <ListItemSecondaryAction>
-                <IconButton
-                  onClick={() =>
-                    dispatch({ type: "removeItem", payload: { id } })
-                  }
-                >
+                <IconButton onClick={() => removeItem(id)}>
                   <Delete></Delete>
                 </IconButton>
               </ListItemSecondaryAction>
@@ -65,3 +60,5 @@ export default function Todo() {
     </>
   );
 }
+
+export default connect(state => ({todo : state}), { addItemAction, removeItemAction })(Todo);

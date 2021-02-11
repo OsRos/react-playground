@@ -27,6 +27,8 @@ export default function reducer(state = initialState, action) {
       const newTodo = action.payload.newTodo;
       if (!isTodoExisting(items, newTodo)) {
         return { items: [...items, createNewItem(newTodo)] };
+      } else {
+        return state;
       }
     case "removeItem":
       const id = action.payload.id;
