@@ -5,26 +5,23 @@ import {
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-  TextField,
+  TextField
 } from "@material-ui/core";
 import {
   Assignment,
   AssignmentTurnedIn,
   Delete,
-  PostAdd,
+  PostAdd
 } from "@material-ui/icons";
-import React, { useCallback, useReducer, useRef, useState } from "react";
-import { connect } from "react-redux";
-import reducer, { initialState } from "./reducer";
-import { addItemAction, removeItemAction } from "./actions";
+import React, { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addItemAction as addItem, removeItemAction as removeItem } from "./actions";
+import itemsSelector from "./selectors";
 
-function Todo({todo:todoState, addItemAction: addItem, removeItemAction: removeItem }) {
-  console.log("Todo ...")
-  console.log(todoState)
-  // const { addItemAction: addItem, removeItemAction: removeItem } = props
+function Todo() {
   const todo = useRef();
-  const items = todoState.todo.items
-  // const [{ items }, dispatch] = useReducer(reducer, initialState);
+  const items = useSelector(itemsSelector)
+  const dispatch = useDispatch()
 
   return (
     <>
@@ -33,7 +30,7 @@ function Todo({todo:todoState, addItemAction: addItem, removeItemAction: removeI
         style={{ width: 1800 }}
         inputRef={todo}
       ></TextField>
-      <IconButton onClick={() => addItem(todo.current.value)}>
+      <IconButton onClick={() => dispatch(addItem(todo.current.value))}>
         <PostAdd></PostAdd>
       </IconButton>
       <List>
@@ -49,7 +46,7 @@ function Todo({todo:todoState, addItemAction: addItem, removeItemAction: removeI
               </ListItemIcon>
               <ListItemText primary={description}></ListItemText>
               <ListItemSecondaryAction>
-                <IconButton onClick={() => removeItem(id)}>
+                <IconButton onClick={() => dispatch(removeItem(id))}>
                   <Delete></Delete>
                 </IconButton>
               </ListItemSecondaryAction>
@@ -61,4 +58,4 @@ function Todo({todo:todoState, addItemAction: addItem, removeItemAction: removeI
   );
 }
 
-export default connect(state => ({todo : state}), { addItemAction, removeItemAction })(Todo);
+export default Todo;
