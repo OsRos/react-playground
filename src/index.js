@@ -1,21 +1,31 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-import * as serviceWorker from "./serviceWorker";
-import Counter from "./Counter";
-import RandomUser from "./RandomUser";
-import Todo from "./Todo";
-import ErrorBoundary from "./ErrorBoundary";
 import { Provider } from "react-redux";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import App from "./App";
+import Counter from "./Counter";
+import ErrorBoundary from "./ErrorBoundary";
+import "./index.css";
+import Menu from "./Menu";
+import RandomUser from "./RandomUser";
+import * as serviceWorker from "./serviceWorker";
 import store from "./store";
+import Todo from "./Todo";
 ReactDOM.render(
   <React.StrictMode>
     {/* <App /> */}
     {/* <Counter></Counter> */}
     <Provider store={store}>
       <ErrorBoundary>
-        <Todo></Todo>
+        <Router>
+          <Menu></Menu>
+          <Switch>
+          <Route path="/todo" component={Todo}></Route>
+          <Route path="/randomUser" component={RandomUser}></Route>
+          <Route path="/counter" component={Counter}></Route>
+          <Route path="/" component={App}></Route>
+          </Switch>
+        </Router>
       </ErrorBoundary>
     </Provider>
   </React.StrictMode>,
