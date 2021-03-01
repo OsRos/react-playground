@@ -28,3 +28,8 @@
   .selected {
       background-color: gray;
   }
+
+  select {
+    position:relative;
+    top:1em;
+  }

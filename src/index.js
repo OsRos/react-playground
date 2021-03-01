@@ -6,27 +6,32 @@ import App from "./App";
 import Counter from "./Counter";
 import ErrorBoundary from "./ErrorBoundary";
 import "./index.css";
+import LanguageProvider from "./LanguageProvider";
 import Menu from "./Menu";
 import RandomUser from "./RandomUser";
 import * as serviceWorker from "./serviceWorker";
 import store from "./store";
 import Todo from "./Todo";
+// console.log(messages)
 ReactDOM.render(
   <React.StrictMode>
     {/* <App /> */}
     {/* <Counter></Counter> */}
     <Provider store={store}>
-      <ErrorBoundary>
-        <Router>
-          <Menu></Menu>
-          <Switch>
-          <Route path="/todo" component={Todo}></Route>
-          <Route path="/randomUser" component={RandomUser}></Route>
-          <Route path="/counter" component={Counter}></Route>
-          <Route path="/" component={App}></Route>
-          </Switch>
-        </Router>
-      </ErrorBoundary>
+      <LanguageProvider>
+        <ErrorBoundary>
+          <Router>
+            <Menu></Menu>
+            <Switch>
+              <Route path="/todo/:id" component={Todo}></Route>
+              <Route path="/randomUser" component={RandomUser}></Route>
+              <Route path="/counter" component={Counter}></Route>
+              <Route path="/todo" component={Todo}></Route>
+              <Route path="/" component={App}></Route>
+            </Switch>
+          </Router>
+        </ErrorBoundary>
+      </LanguageProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

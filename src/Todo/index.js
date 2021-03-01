@@ -5,24 +5,37 @@ import {
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-  TextField
+  TextField,
 } from "@material-ui/core";
 import {
   Assignment,
   AssignmentTurnedIn,
   Delete,
-  PostAdd
+  PostAdd,
 } from "@material-ui/icons";
+import { isEmpty } from "lodash-es";
 import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addItemAction as addItem, removeItemAction as removeItem } from "./actions";
+import {
+  addItemAction as addItem,
+  removeItemAction as removeItem,
+} from "./actions";
 import itemsSelector from "./selectors";
+import {Link} from "react-router-dom"
 
-function Todo() {
+function Todo({ match }) {
+  const params = match.params;
   const todo = useRef();
-  const items = useSelector(itemsSelector)
-  const dispatch = useDispatch()
+  const items = useSelector(itemsSelector);
+  const dispatch = useDispatch();
 
+  const isMatchingParam = ({id}) =>  {
+    console.log(`id:${id}`)
+    console.log(`params.id:${params.id}`)
+    const returnVal =  isEmpty(params.id)||params.id === id
+    console.log(returnVal)
+    return returnVal
+  }
   return (
     <>
       <TextField
@@ -34,7 +47,7 @@ function Todo() {
         <PostAdd></PostAdd>
       </IconButton>
       <List>
-        {items.map(({ id, description, status }) => {
+        {items.filter(isMatchingParam).map(({ id, description, status }) => {
           return (
             <ListItem key={id}>
               <ListItemIcon>
@@ -44,7 +57,7 @@ function Todo() {
                   <AssignmentTurnedIn></AssignmentTurnedIn>
                 )}
               </ListItemIcon>
-              <ListItemText primary={description}></ListItemText>
+              <Link to="/todo/2"><ListItemText primary={description}></ListItemText></Link>
               <ListItemSecondaryAction>
                 <IconButton onClick={() => dispatch(removeItem(id))}>
                   <Delete></Delete>

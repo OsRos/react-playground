@@ -1,3 +1,4 @@
 import { combineReducers } from "redux";
 import todo from "./Todo/reducer";
-export default combineReducers({ todo });
+import user from "./core/User/reducer"
+export default combineReducers({ todo, user });
