@@ -1,73 +1,46 @@
-import React, { useState } from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import Select from "react-select";
-import DatePicker from "react-datepicker";
-import styled from "styled-components";
-import "react-datepicker/dist/react-datepicker.css";
-
-import { options, years, months } from "./Constants.js";
-
-const DateHeader = ({
-  date,
-  changeYear,
-  changeMonth,
-  decreaseMonth,
-  increaseMonth,
-  prevMonthButtonDisabled,
-  nextMonthButtonDisabled,
-}) => (
-  <div
-    style={{
-      margin: 10,
-      display: "flex",
-      justifyContent: "center",
-    }}
-  >
-    <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
-      {"<"}
-    </button>
-    <Select
-      options={years}
-      defaultValue={new Date().getYear()}
-      onChange={() => console.log("noops")}
-    />
-
-    <Select
-      options={months}
-      defaultValue={new Date().getMonth()+1}
-      onChange={() => console.log("noops")}
-    />
-    <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
-      {">"}
-    </button>
-  </div>
-);
+import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
+import React from "react";
+import { Provider } from "react-redux";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Counter from "./Counter";
+import DatePicker from "./DatePicker";
+import ErrorBoundary from "./ErrorBoundary";
+import LanguageProvider from "./LanguageProvider";
+import Menu from "./Menu";
+import RandomUser from "./RandomUser";
+import store from "./store";
+import Todo from "./Todo";
 
 function App() {
-  const [selected, setSelected] = useState(null);
-  const [date, setDate] = useState(new Date());
-
-  const StyledSelect = styled(Select)`
-    margin-bottom: 2rem;
-  `;
+  const { isAuthenticated, loginWithRedirect, logout, isLoading } = useAuth0();
 
   return (
-    <>
-      <StyledSelect
-        options={options}
-        defaultValue={selected}
-        onChange={setSelected}
-        maxMenuHeight={300}
-      />
-      <DatePicker selected={date} onChange={(date) => setDate(date)} />
-      <DatePicker
-        renderCustomHeader={(props) => <DateHeader {...props} />}
-        selected={date}
-        onChange={(date) => setDate(date)}
-      />
-      <div>Hello world</div>
-    </>
+    <Provider store={store}>
+      <LanguageProvider>
+        <ErrorBoundary>
+          <Router>
+            {isLoading ? (
+              <div>Loading...</div>
+            ) : isAuthenticated ? (
+              <>
+                <Menu></Menu>
+                <Switch>
+                  <Route path="/todo/:id" component={Todo}></Route>
+                  <Route path="/randomUser" component={RandomUser}></Route>
+                  <Route path="/counter" component={Counter}></Route>
+                  <Route path="/todo" component={Todo}></Route>
+                  <Route component={DatePicker}></Route>
+                </Switch>
+              </>
+            ) : (
+              <>
+                <button onClick={loginWithRedirect}>Login</button>
+              </>
+            )}
+          </Router>
+        </ErrorBoundary>
+      </LanguageProvider>
+    </Provider>
   );
 }
 

@@ -4,7 +4,7 @@ import { IntlProvider } from "react-intl";
 import { useSelector } from "react-redux";
 import { selectLocale } from "./core/User/selectors";
 import messages from "./messages";
-const Language = ({ children }) => {
+const LanguageProvider = ({ children }) => {
   const locale = useSelector(selectLocale)
   return (
     <IntlProvider locale={locale} messages={messages[locale]}>
@@ -12,4 +12,4 @@ const Language = ({ children }) => {
     </IntlProvider>
   );
 };
-export default Language
+export default LanguageProvider

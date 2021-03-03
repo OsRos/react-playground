@@ -29,7 +29,7 @@
       background-color: gray;
   }
 
-  select {
+  select, button {
     position:relative;
     top:1em;
   }

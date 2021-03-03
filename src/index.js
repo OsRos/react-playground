@@ -1,38 +1,19 @@
+import { Auth0Provider } from "@auth0/auth0-react";
 import React from "react";
 import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import App from "./App";
-import Counter from "./Counter";
-import ErrorBoundary from "./ErrorBoundary";
 import "./index.css";
-import LanguageProvider from "./LanguageProvider";
-import Menu from "./Menu";
-import RandomUser from "./RandomUser";
 import * as serviceWorker from "./serviceWorker";
-import store from "./store";
-import Todo from "./Todo";
 // console.log(messages)
 ReactDOM.render(
   <React.StrictMode>
-    {/* <App /> */}
-    {/* <Counter></Counter> */}
-    <Provider store={store}>
-      <LanguageProvider>
-        <ErrorBoundary>
-          <Router>
-            <Menu></Menu>
-            <Switch>
-              <Route path="/todo/:id" component={Todo}></Route>
-              <Route path="/randomUser" component={RandomUser}></Route>
-              <Route path="/counter" component={Counter}></Route>
-              <Route path="/todo" component={Todo}></Route>
-              <Route path="/" component={App}></Route>
-            </Switch>
-          </Router>
-        </ErrorBoundary>
-      </LanguageProvider>
-    </Provider>
+    <Auth0Provider
+      domain="dev-hc7xqxh3.us.auth0.com"
+      clientId="ZLeVS1VtgRm96P983KxXOVQZo1yTtJGY"
+      redirectUri={window.location.origin}
+    >
+      <App />
+    </Auth0Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );
